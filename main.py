@@ -9,11 +9,11 @@ from time import sleep
 
 import argparser.parser as arg
 import configlog.logger as lg
+import logging
 
 progname="WSJ-parser"
 
 def main():
     parser = arg.args()
-    lg.configLogger(parser,progname)
-
+    lg.configLogger(parser.parse_args(),progname)
 main()
