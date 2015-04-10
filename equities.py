@@ -17,4 +17,4 @@ class Stock:
         csvd=csvd+str(self.volume)
         return csvd
     def logsentinal(self):
-        logging.DEBUG("Sentinel value was set to "+str(SENTINEL))
+        logging.debug("Sentinel value was set to "+str(SENTINEL))

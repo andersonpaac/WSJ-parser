@@ -14,7 +14,7 @@ import logging
 import urllib2
 from lxml import etree
 from equities import Stock
-
+import datetime
 #@dev
 progname="WSJ-parser"
 url="http://online.wsj.com/mdc/public/page/2_3021-gainnyse-gainer.html?mod=mdc_uss_pglnk"
@@ -23,10 +23,11 @@ url="http://online.wsj.com/mdc/public/page/2_3021-gainnyse-gainer.html?mod=mdc_u
 #returns the tree module
 def clean(argg):
     if argg.source=="Unset":
-        logging.INFO("Didn't set a URL to get from , getting the latest data")
-        return getpage()
+        logging.info("Didn't set a URL to get from , getting the latest data")
+        tree= getpage()
+        return tree
     else:
-        logging.INFO("A source file was given -"+argg.source)
+        logging.info("A source file was given -"+argg.source)
         a=open(argg.source,"rb")
         data=a.read()
         tree=etree.HTML(data)
@@ -37,9 +38,9 @@ def getpage():
     try:
         ulib=urllib2.urlopen(url)
         tree=etree.HTML(ulib.read())
-        logging.DEBUG("URL Request made and successful")
+        logging.debug("URL Request made and successful")
         return tree
-    except urllib2.URLError
+    except urllib2.URLError:
         logging.error("Network connection failed")
         print "failed to connect to the network , please try using the --source argument for giving an offline page"
         exit(-1)
@@ -53,28 +54,48 @@ def goget(argg):
     volume = tree.xpath("//tr/td[6]/text()")[1:]
 
     if(len(symbols_raw) != len(price_raw) != len(change_raw) != len(percent_change_raw) != len(volume)):
-        logging.CRITICAL("SANITY CHECK FAILED ERROR: Unsynchronized lengths\nBeginging variable dump---------")
-        logging.CRITICAL("symbols_raw %s , \nprice_raw %s , \nchange_raw %s ",str(symbols_raw),str(price_raw),str(change_raw))
-        logging.CRITICAL("percentage_change_raw %s , \nVolume %s",str(percent_change_raw),str(volume))
+        logging.critical("SANITY CHECK FAILED ERROR: Unsynchronized lengths\nBeginging variable dump---------")
+        logging.critical("symbols_raw %s , \nprice_raw %s , \nchange_raw %s ",str(symbols_raw),str(price_raw),str(change_raw))
+        logging.critical("percentage_change_raw %s , \nVolume %s",str(percent_change_raw),str(volume))
         errmsg = "An error has occured , please create an issue on the git repository at "
         errmsg = errmsg+"https://github.com/andersonpaac/WSJ-parser"
         print errmsg
     else:
         stocks=[]
         stock=Stock()
-        stock.symbol=symbols_raw[0].split("$")[1]
-        stock.price = price_raw[0]
+        stock.symbol=symbols_raw[0].split("(")[1].split(")")[0]
+        stock.price = price_raw[0].split("$")[1]
         stock.chg_value = change_raw[0]
         stock.percent_chg = percent_change_raw[0]
         stock.volume = volume[0]
-        while i in xrange(1,len(symbols_raw)):
+        stocks.append(stock)
+        for i in xrange(1,len(symbols_raw)):
             stock=Stock()
-            stock.symbol=symbols_raw[i].split("$")[1]
+            stock.symbol=symbols_raw[i].split("(")[1].split(")")[0]
             stock.price = price_raw[i]
             stock.chg_value = change_raw[i]
             stock.percent_chg = percent_change_raw[i]
             stock.volume = volume[i]
+            stocks.append(stock)
             i = i + 1
+
+        logging.info("Completed parsing")
+        writetocsv(argg,stocks)
+
+def writetocsv(argg,stocks):
+    print len(stocks)
+    fname=progname+"_"+str(datetime.datetime.now())[:-5]+".csv"
+    if argg.output != "Unset":
+        fname=argg.output
+    logging.info("Initiating write to "+fname)
+    writer = open(fname,"wb")
+    for each in stocks:
+        writer.write(each.makecsv()+"\n")
+    writer.close()
+    logging.info("Complete writing")
+    print "Written to "+fname
+
+
 
 
 

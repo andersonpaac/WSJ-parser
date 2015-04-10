@@ -4,7 +4,7 @@ import datetime
 #Sets configlog to WARNING level
 def configLogger(depend=None,progname="prog"):
     #@dev:Set Defaults
-    fname=progname+str(datetime.datetime.now())+".log"
+    fname=progname+str(datetime.datetime.now())[:-5]+".log"
     lvl=30                                                          #Default level of WARNING
     formatforlogging="%(asctime)s'%(levelname)s:%(message)s"        #Format for logs
 
