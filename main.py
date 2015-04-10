@@ -1,12 +1,4 @@
 __author__ = 'andersonpaac'
-'''
-stage-1 :   Get arg parse commands : Complete
-stage-2 :   Setup configlog        : Complete
-stage-3 :   Service integration
-stage-4 :   Actuals                : Tasking
-
-'''
-from time import sleep
 
 import argparser.parser as arg
 import configlog.logger as lg
