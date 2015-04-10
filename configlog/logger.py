@@ -1,10 +1,14 @@
 __author__ = 'andersonpaac'
 import logging
-
+import datetime
 #Sets configlog to WARNING level
 def configLogger(depend=None,progname="prog"):
-    fname=progname+".log"           #Set Defaults
-    lvl=30                          #Default level of WARNING
+    #@dev:Set Defaults
+    fname=progname+str(datetime.datetime.now())+".log"
+    lvl=30                                                          #Default level of WARNING
+    formatforlogging="%(asctime)s'%(levelname)s:%(message)s"        #Format for logs
+
+
 
     if(type(depend) is int):
         if(depend==1):
@@ -12,12 +16,14 @@ def configLogger(depend=None,progname="prog"):
             message=message+ " level with -lvl Creating a temporary logfile "+str(progname)+" only "
             message=message+ "Info level actions and higher will be sent here(configlog.Info)"
             print message
-            logging.basicConfig(filename=fname,level=lvl,format='%(levelname)s:%(message)s')
+            logging.basicConfig(filename=fname,level=lvl,format=formatforlogging)
 
     else:
 
         try:
-            fname=depend.logto
+            eval = depend.logto
+            if eval!="Unset":
+                fname = eval
             try:
                 lvl=int(depend.level)
                 lvl=lvl*10
@@ -26,10 +32,10 @@ def configLogger(depend=None,progname="prog"):
                 msg=msg+"y -h for help"
                 print msg
 
-            logging.basicConfig(filename=fname,level=lvl,format='%(levelname)s:%(message)s')
+            logging.basicConfig(filename=fname,level=lvl,format=formatforlogging)
 
         except AttributeError:
             msg="INFO: You've not provided a logname to log to , this program will log to "+fname+" with a log level of "
             msg = msg + "WARNING"
             print msg
-            logging.basicConfig(filename=fname,level=lvl,format='%(levelname)s:%(message)s')
+            logging.basicConfig(filename=fname,level=lvl,format=formatforlogging)

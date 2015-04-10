@@ -13,4 +13,5 @@ def getdescription():
     sourcehelp=sourcehelp+"\npython main.py -s sample.HTML"
 
     levelhelp="Sets the configlog level Choose 1:DEBUG , 2:INFO , 3:WARN AND ABOVE Example python main.py -lvl 2"
-    return descript+url,logtohelp,sourcehelp,levelhelp
+    ohelp = "Sets the output file where csv is written to , if unset -csv is written to a default filename"
+    return descript+url,logtohelp,sourcehelp,levelhelp,ohelp
