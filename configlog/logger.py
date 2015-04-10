@@ -31,7 +31,6 @@ def configLogger(depend=None,progname="prog"):
                 msg= "WARN:Your value for -lvl is incorrect please choose an integer between 1 and 3 type python main.p"
                 msg=msg+"y -h for help"
                 print msg
-
             logging.basicConfig(filename=fname,level=lvl,format=formatforlogging)
 
         except AttributeError:
@@ -39,3 +38,4 @@ def configLogger(depend=None,progname="prog"):
             msg = msg + "WARNING"
             print msg
             logging.basicConfig(filename=fname,level=lvl,format=formatforlogging)
+        print "Logs will be written to "+fname+" with level "+str(lvl)

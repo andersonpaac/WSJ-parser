@@ -75,7 +75,6 @@ def goget(argg):
         writetocsv(argg,stocks)
 
 def writetocsv(argg,stocks):
-    print len(stocks)
     fname=progname+"_"+str(datetime.datetime.now())[:-5]+".csv"
     if argg.output != "Unset":
         fname=argg.output
@@ -85,7 +84,7 @@ def writetocsv(argg,stocks):
         writer.write(each.makecsv()+"\n")
     writer.close()
     logging.info("Complete writing")
-    print "Written to "+fname
+    print "CSV Written to "+fname
 
 
 
