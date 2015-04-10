@@ -7,7 +7,7 @@ through the day. This data could be helpful in any sort of financial analysis.
 
 #Usage
 This will create a log file for you and a csv file , since no arguments are parsed , this would retrieve the 
-current top gainers from http://online.wsj.com/mdc/public/page/2_3021-gainnyse-gainer.html?mod=mdc_uss_pglnk 
+current top gainers from [WSJ](http://online.wsj.com/mdc/public/page/2_3021-gainnyse-gainer.html?mod=mdc_uss_pglnk "Title") 
 and will use that data as the source.
 ```
     python main.py
